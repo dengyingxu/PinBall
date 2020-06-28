@@ -14,28 +14,32 @@ int main() {
     initgame();
 
 
-  //  siganl(14, drawgame);
+    signal(14, drawgame);
 
     struct itimerval itimer;
-    itimer.it_interval.tv_sec = 10;
+    itimer.it_interval.tv_sec = 0;
     itimer.it_interval.tv_usec = 100000;
-    itimer.it_value.tv_sec = 10;
+    itimer.it_value.tv_sec = 0;
     itimer.it_value.tv_usec = 1000;
 
     setitimer(ITIMER_REAL, &itimer, NULL);
 
- /*   while(1) {
+    while(1) {
        int c = getch();
         switch(c) {
             case KEY_LEFT:
-                //
+                Bdir.x -= 2;
+                break;
             case KEY_RIGHT:
-                //
+                Bdir.x += 2;
+                break;
+            case KEY_UP:
+                break;
             default:
-            
+                break;
         }
     }
-*/
+
     getch();
     endwin();
     return 0;
