@@ -32,8 +32,7 @@ struct point Bdir, Odir;
 int cx = (X - 2) / 2 + 1;
 int cy = (Y - 2) / 2 + 1;
 
-int dir_r[] = {-1, 0, 1};
-//int diry[] = {-1, 0, 1};
+int dir_r[] = {-1, 0, 1, -1, -1, -1, 0, 1, -1, 1, 1, 0, 1};
 
 int flag = 0;
 int score = 0;
@@ -78,10 +77,10 @@ void initfield(int x, int y) {
         gotoxy_putc(X, i, '|');
     }
     attroff(COLOR_PAIR(1));
-    attron(COLOR_PAIR(2));
+    attron(COLOR_PAIR(4));
     gotoxy_puts(2, Y+ 3, "Message:");
     gotoxy_puts(X + 3, 2, "Help:");
-    attroff(COLOR_PAIR(2));
+    attroff(COLOR_PAIR(4));
 
 }
 
@@ -98,7 +97,7 @@ void initgame() {
     init_pair(4, COLOR_RED, COLOR_BLACK);
     initfield(X, Y);
 
-    Bpoint.x = cx;
+    Bpoint.x = cx - 3;
     Bpoint.y = Y - 3;
     attron(COLOR_PAIR(3));
     for (int i = 0; i < 8; i++) {
@@ -114,25 +113,35 @@ void initgame() {
 void drawgame() {
     gotoxy_putc(Opoint.x, Opoint.y, ' ');
 
-    Opoint.x += Odir.x;
-    Opoint.y += Odir.y;
     
+    if (!flag) {
+        Opoint.x = Bpoint.x + 4;
+    }
+
+    if (flag) {
+        Opoint.x += Odir.x;
+        Opoint.y += Odir.y;
+    }
+
     if (Opoint.x > X - 1) {
         Opoint.x = X - 1;
         Odir.x = -1;
-        Odir.y = dir_r[get_random(2)];
+        x:Odir.y = dir_r[get_random(12)];
+        if (Odir.y == 0) goto x;
+        
         
     }
     if (Opoint.x <= 2) {
         Opoint.x = 2;
         Odir.x = 1;
-        Odir.y = dir_r[get_random(2)];
+        y:Odir.y = dir_r[get_random(12)];
+        if (Odir.y == 0) goto y;
     }
 
     if (Opoint.y <= 1) {
-        Opoint.y = 1;
+        Opoint.y = 2;
         Odir.y = 1;
-        Odir.x = dir_r[get_random(2)];
+        Odir.x = dir_r[get_random(12)];
     }
     if (Opoint.y >= Y - 1) {
         char info[1024] = {0};
@@ -181,7 +190,7 @@ void drawgame() {
     if (flag && Opoint.x <= Bpoint.x + 8 && Opoint.x >= Bpoint.x && Opoint.y >= Y - 4) {
         score += 100;
         Odir.y = -1;
-        Odir.x = dir_r[get_random(2)];
+        Odir.x = dir_r[get_random(12)];
         char info[1024] = {0};
         sprintf(info, "You get %d, Total %d !", 100, score);
         gotoxy_puts(3, Y + 4, info);

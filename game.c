@@ -45,8 +45,11 @@ int main() {
             case KEY_UP:
                 if (flag) break;
                 flag = 1;
-                Odir.x = dir_r[get_random(2)];
+                Odir.x = dir_r[get_random(12)];
                 Odir.y = -1;
+                char blank[] = "";
+                gotoxy_puts(3, Y + 4, blank);
+                gotoxy_puts(3, Y + 5, blank);
                 break;
             default:
                 break;
