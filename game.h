@@ -13,6 +13,7 @@
 #include <signal.h>
 #include <sys/time.h>
 #include <curses.h>
+#include <string.h>
 #define X 70
 #define Y 20
 
@@ -107,14 +108,20 @@ void drawgame() {
     attroff(COLOR_PAIR(2));
     Bpoint.x += Bdir.x;
     Bpoint.y += Bdir.y;
+    
+    memset(&Bdir, 0, sizeof(Bdir));
 
+    if (Bpoint.x >= X - 8) Bpoint.x = X - 8;
+    if (Bpoint.x <= 2) Bpoint.x = 2;
+    
+    
     attron(COLOR_PAIR(3));
     for (int i = 0; i < 8; i++) {
         gotoxy_putc(Bpoint.x + i, Bpoint.y, ' ');
         gotoxy_putc(Bpoint.x + i, Bpoint.y + 1, ' ');
     }
     attroff(COLOR_PAIR(3));
-
+    
 }
 
 #endif
